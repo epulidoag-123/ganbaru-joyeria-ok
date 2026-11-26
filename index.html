@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    
+    <!-- TÍTULO OPTIMIZADO PARA SEO (CON SLOGAN) -->
+    <title>Joyería Artesanal con Esmeraldas Colombianas | Ganbaru Joyería - La belleza de la tierra convertida en joya</title>
+    
+    <!-- META DESCRIPCIÓN -->
+    <meta name="description" content="Ganbaru Joyería: La belleza de la tierra convertida en joya. Descubre nuestra colección artesanal con esmeraldas colombianas certificadas. Anillos, collares, pendientes y pulseras de alta calidad. Envíos a todo Colombia.">
+    
+    <!-- PALABRAS CLAVE -->
+    <meta name="keywords" content="joyería artesanal, esmeraldas colombianas, anillos de compromiso, collares de esmeralda, joyería en Colombia, Ganbaru Joyería, la belleza de la tierra convertida en joya">
+    
+    <!-- AUTOR -->
+    <meta name="author" content="Ganbaru Joyería">
+    
+    <!-- ROBOTS -->
+    <meta name="robots" content="index, follow">
+    
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <!-- CSS propio -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="toast"></div>
+
+<div id="admin-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="admin-modal-title" hidden>
+    <form id="admin-login-form" class="modal-box">
+        <h3 id="admin-modal-title"><i aria-hidden="true" class="fas fa-lock"></i> Acceso administrativo</h3>
+        <label for="admin-user">Usuario</label>
+        <input type="text" id="admin-user" autocomplete="username" required>
+        <label for="admin-pass">Contraseña</label>
+        <input type="password" id="admin-pass" autocomplete="current-password" required>
+        <div class="modal-actions">
+            <button type="submit" class="btn-gold">Ingresar</button>
+            <button type="button" class="btn-gold modal-cancel" id="admin-cancel">Cancelar</button>
+        </div>
+    </form>
+</div>
+
+<header>
+    <div class="navbar">
+        <div class="logo">
+            <img src="images/logo-ganbaru.png" alt="Ganbaru Joyería" class="logo-img">
+            <div class="logo-text">
+                <h1>GANBARU</h1>
+                <p>La belleza de la tierra convertida en joya</p>
+            </div>
+        </div>
+        <nav class="nav-links" aria-label="Navegación principal">
+            <a href="#home" data-page="home">Inicio</a>
+            <a href="#catalog" data-page="catalog">Catálogo</a>
+            <a href="#about" data-page="about">Nosotros</a>
+            <a href="#contact" data-page="contact">Contacto</a>
+            <a href="#account" data-page="account">Mi Cuenta</a>
+            <a href="#admin" data-page="admin" class="admin-icon"><i aria-hidden="true" class="fas fa-chart-line"></i> Admin</a>
+            <button type="button" class="cart-icon" aria-label="Abrir carrito de compras"><i aria-hidden="true" class="fas fa-shopping-cart"></i><span id="cartCount" class="cart-count">0</span></button>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <!-- HOME -->
+    <div id="home" class="page active-page">
+        <div class="hero">
+            <div class="hero-content">
+                <h2>Joyería Artesanal Colombiana</h2>
+                <p>Cada pieza cuenta una historia única</p>
+            </div>
+            <button class="btn-gold" data-page="catalog">Explorar Colección</button>
+        </div>
+        <h2><i aria-hidden="true" class="fas fa-gem"></i> Productos Destacados</h2>
+        <div id="featured-products" class="products-grid"></div>
+        <h2><i aria-hidden="true" class="fas fa-fire"></i> Recomendaciones para Ti</h2>
+        <div id="recomendaciones-home" class="products-grid"></div>
+    </div>
+
+    <!-- CATÁLOGO -->
+    <div id="catalog" class="page">
+        <h2>Catálogo de Joyas</h2>
+        <div class="filters">
+            <select id="catFilter">
+                <option value="all">Todas las categorías</option>
+                <option value="Anillos">Anillos</option>
+                <option value="Collares">Collares</option>
+                <option value="Pendientes">Pendientes</option>
+                <option value="Pulseras">Pulseras</option>
+            </select>
+            <input type="number" id="priceMin" placeholder="Precio min" step="10000">
+            <input type="number" id="priceMax" placeholder="Precio max" step="10000">
+            <input type="text" id="searchInput" placeholder="Buscar...">
+        </div>
+        <div id="catalog-grid" class="products-grid"></div>
+    </div>
+
+    <!-- DETALLE PRODUCTO -->
+    <div id="product-detail" class="page">
+        <div id="detail-container"></div>
+        <h3>Productos Relacionados</h3>
+        <div id="related-products" class="products-grid"></div>
+    </div>
+
+    <!-- CARRITO -->
+    <div id="cart" class="page">
+        <h2>Carrito de Compras</h2>
+        <div id="cart-items"></div>
+        <div id="cart-total"></div>
+        <button id="checkout-btn" class="btn-gold">Proceder al pago</button>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div id="checkout" class="page">
+        <h2>Checkout</h2>
+        <form id="checkout-form">
+            <input type="text" placeholder="Nombre completo" required id="checkout-name">
+            <input type="email" placeholder="Email" required id="checkout-email">
+            <input type="text" placeholder="Dirección" required id="checkout-address">
+            <button type="submit" class="btn-gold">Confirmar Pedido</button>
+        </form>
+    </div>
+
+    <!-- SOBRE NOSOTROS -->
+    <div id="about" class="page">
+        <div class="about-header">
+            <h2><i aria-hidden="true" class="fas fa-leaf"></i> Nuestra Historia</h2>
+            <p class="about-subtitle">"La belleza de la tierra convertida en joya"</p>
+        </div>
+
+        <!-- Origen -->
+        <div class="about-section">
+            <div class="about-text">
+                <h3><i aria-hidden="true" class="fas fa-mountain"></i> 🌿 Origen: El Alma de la Tierra</h3>
+                <p>Ganbaru Joyería nace en lo más profundo de las montañas colombianas, en la región minera de Boyacá, donde la tierra guarda uno de sus tesoros más preciados: <strong>la esmeralda</strong>. Desde hace más de una década, hemos dedicado nuestra vida a honrar estas piedras que la naturaleza ha gestado durante millones de años.</p>
+                <p>Nuestra fundadora, Viviana Pineda, creció entre mineros artesanales y lapidarios que le enseñaron que cada gema cuenta una historia. No es solo una piedra preciosa; es un fragmento de la Tierra que ha viajado a través del tiempo para llegar a tus manos. En 2024, Viviana y su esposo Leonar Pulido y su hermano Pedro Pulido, deciden los tres, convertir esa pasión en un proyecto de vida: <strong>Ganbaru</strong>, palabra japonesa que significa <em>"perseverar con esfuerzo y dedicación"</em>, que se traduce como <em>"esforzarse al máximo, no rendirse y perseverar ante la dificultad"</em>. Ganbaru va más allá de "hacer bien una cosa": es un modo de entender la vida centrado en el esfuerzo, la resistencia y la resiliencia.</p>
+            </div>
+            <div class="about-image">
+                <img loading="lazy" src="images/esmeraldas-1.png" alt="Esmeraldas colombianas">
+            </div>
+        </div>
+
+        <!-- Filosofía -->
+        <div class="about-section reverse">
+            <div class="about-text">
+                <h3><i aria-hidden="true" class="fas fa-gem"></i> 💎 Filosofía: Belleza con Significado</h3>
+                <p>En Ganbaru creemos que la joyería trasciende lo estético. Cada pieza que creamos es un puente entre la naturaleza y el ser humano, un recordatorio de que la verdadera belleza tiene raíz y propósito. Nuestro trabajo no solo busca embellecer, sino también <strong>contar historias</strong>: historias de la tierra, de las manos que la transforman y de las personas que la portan.</p>
+                <p>Trabajamos exclusivamente con <strong>esmeraldas colombianas certificadas</strong>, reconocidas mundialmente por su color verde profundo y su pureza excepcional. Pero más allá de su valor comercial, valoramos el origen ético de cada gema, asegurándonos de que provenga de minas responsables que respetan tanto el medio ambiente como los derechos de las comunidades locales.</p>
+            </div>
+            <div class="about-image">
+                <img loading="lazy" src="images/esmeraldas-2.png" alt="Esmeralda brillante">
+            </div>
+        </div>
+
+        <!-- MISIÓN Y VISIÓN -->
+        <div class="mision-vision-section">
+            <div class="mision-card">
+                <i aria-hidden="true" class="fas fa-bullseye"></i>
+                <h3>Misión</h3>
+                <p>Crear joyas únicas con esmeraldas colombianas que cuenten historias, combinando la artesanía tradicional con diseños contemporáneos, ofreciendo a nuestros clientes piezas que trascienden el tiempo mientras apoyamos el comercio justo y la sostenibilidad ambiental.</p>
+            </div>
+            <div class="vision-card">
+                <i aria-hidden="true" class="fas fa-eye"></i>
+                <h3>Visión</h3>
+                <p>Ser reconocidos como la joyería artesanal líder en Latinoamérica, posicionando la esmeralda colombiana en el mercado global como símbolo de lujo sostenible y autenticidad cultural.</p>
+            </div>
+        </div>
+
+        <!-- SERVICIOS -->
+        <div class="servicios-section">
+            <h3><i aria-hidden="true" class="fas fa-concierge-bell"></i> Nuestros Servicios</h3>
+            <div class="servicios-grid">
+                <div class="servicio-card">
+                    <i aria-hidden="true" class="fas fa-diamond"></i>
+                    <h4>Grabado Interno de Joyas</h4>
+                    <p>Personaliza tus joyas con grabados internos: fechas especiales, iniciales, nombres o mensajes significativos. Realizado con tecnología láser de precisión que no daña la estructura de la pieza.</p>
+                    <span class="servicio-precio">Desde $50.000 COP</span>
+                    <button class="cotizar-servicio-btn" data-servicio="Grabado Interno de Joyas"><i aria-hidden="true" class="fas fa-file-invoice-dollar"></i> Solicitar Cotización</button>
+                </div>
+                <div class="servicio-card">
+                    <i aria-hidden="true" class="fas fa-tools"></i>
+                    <h4>Mantenimiento para Joyas</h4>
+                    <p>Servicio profesional de limpieza, pulido, reparación de engarces, reajuste de anillos y restauración de piezas antiguas. Devolvemos el brillo original a tus joyas favoritas.</p>
+                    <span class="servicio-precio">Desde $80.000 COP</span>
+                    <button class="cotizar-servicio-btn" data-servicio="Mantenimiento para Joyas"><i aria-hidden="true" class="fas fa-file-invoice-dollar"></i> Solicitar Cotización</button>
+                </div>
+                <div class="servicio-card">
+                    <i aria-hidden="true" class="fas fa-pencil-ruler"></i>
+                    <h4>Diseño Personalizado</h4>
+                    <p>¿Tienes una idea única? Nuestros diseñadores la harán realidad. Creamos joyas a tu medida, desde bocetos hasta la pieza final, utilizando las mejores esmeraldas y metales preciosos.</p>
+                    <span class="servicio-precio">Cotizar según diseño</span>
+                    <button class="cotizar-servicio-btn" data-servicio="Diseño Personalizado de Joyas"><i aria-hidden="true" class="fas fa-file-invoice-dollar"></i> Solicitar Cotización</button>
+                </div>
+                <div class="servicio-card">
+                    <i aria-hidden="true" class="fas fa-cube"></i>
+                    <h4>Render 3D</h4>
+                    <p>Visualiza tu joya antes de crearla. Entregamos renders fotorrealistas en 360° para que apruebes cada detalle: tamaño, color, brillo y posición de las gemas antes de la fabricación.</p>
+                    <span class="servicio-precio">Desde $120.000 COP</span>
+                    <button class="cotizar-servicio-btn" data-servicio="Render 3D de Joyas"><i aria-hidden="true" class="fas fa-file-invoice-dollar"></i> Solicitar Cotización</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- NUESTRO EQUIPO -->
+        <div class="about-section">
+            <div class="about-text">
+                <h3><i aria-hidden="true" class="fas fa-users"></i> Nuestro Equipo</h3>
+                <p>En <strong>Ganbaru Joyería</strong>, contamos con un equipo de profesionales apasionados por el mundo de las esmeraldas y la joyería fina. Cada miembro de nuestro equipo aporta su talento y dedicación para ofrecerte la mejor experiencia.</p>
+                <p><strong>👩‍🎨 Viviana Pineda</strong> - Fundadora & Diseñadora Principal: Con una amplia experiencia, lidera la visión creativa de cada colección, inspirándose en la belleza natural de Colombia.</p>
+                <p><strong>👨‍💼 Leonar Pulido</strong> - Co-fundador & Director Comercial: Responsable de llevar la magia de Ganbaru a cada rincón del país, construyendo relaciones duraderas con nuestros clientes.</p>
+                <p><strong>👨‍🔧 Pedro Pulido</strong> - Co-fundador & Gestor de estrategia comercial: supervisa personalmente cada engarce y acabado, garantizando la más alta calidad.</p>
+                <p><strong>👩‍💼 María González</strong> - Directora de Operaciones: Garantiza que cada pedido llegue a tiempo y en perfectas condiciones, cuidando cada detalle logístico.</p>
+                <p>Juntos y al lado de nuestros asesores de venta quienes guían la decisión de compra, formamos una familia dedicada a convertir la belleza de la tierra en joyas que cuentan historias.</p>
+            </div>
+            <div class="about-image">
+                <img loading="lazy" src="images/equipo-ganbaru.jpeg" alt="Nuestro equipo de trabajo">
+            </div>
+        </div>
+
+        <!-- TESTIMONIOS DE CLIENTES -->
+        <div class="about-section reverse">
+            <div class="about-text">
+                <h3><i aria-hidden="true" class="fas fa-star"></i> Lo que dicen nuestros clientes</h3>
+                <p>A continuación, presentamos algunos de los testimonios reales de nuestros clientes, quienes han confiado en <strong>Joyería Ganbaru</strong> para momentos inolvidables:</p>
+                
+                <p><strong>⭐ Marta Gómez:</strong> <em>"Mi experiencia en Joyería Ganbaru fue excelente. Buscaba un anillo de compromiso especial y el equipo me asesoró con mucha profesionalidad y cercanía. La calidad del anillo y el diseño superaron mis expectativas. Lo recomiendo al cien por cien."</em></p>
+                
+                <p><strong>⭐ Alejandro Rodríguez:</strong> <em>"Visité Joyería Ganbaru para comprar un regalo de aniversario para mi esposa. Me impresionó la variedad de joyas de alta calidad y la atención personalizada que recibí. Encontré el collar perfecto y a mi esposa le encantó. ¡Volveré sin duda!"</em></p>
+                
+                <p><strong>⭐ Sofía Martínez:</strong> <em>"Me encanta Joyería Ganbaru por sus diseños únicos y la calidad de sus piezas. He comprado varios artículos y siempre he quedado muy satisfecha. El servicio postventa también es excelente. ¡Una joyería de confianza!"</em></p>
+                
+                <p><strong>⭐ Juan Carlos Pérez:</strong> <em>"Buscaba un regalo especial y en Joyería Ganbaru encontré unas pulseras con esmeralda colombiana de excelente calidad. El personal me ayudó a elegir la pieza adecuada y me ofreció un trato inmejorable. Estoy muy contento con mi compra."</em></p>
+                
+                <p>Estos testimonios reflejan el compromiso de <strong>Joyería Ganbaru</strong> con la satisfacción del cliente y la calidad de sus productos. ¡Visítalos y descubre por qué son una joyería de referencia!</p>
+            </div>
+            <div class="about-image">
+                <img loading="lazy" src="images/testimonios.png" alt="Clientes satisfechos">
+            </div>
+        </div>
+
+        <!-- Artesanía con Propósito -->
+        <div class="artesania-section">
+            <h3><i aria-hidden="true" class="fas fa-hands"></i> 🖐️ Artesanía con Propósito</h3>
+            <p class="artesania-intro">En un mundo dominado por la producción masiva, en Ganbaru hemos elegido el camino contrario: <strong>la artesanía consciente</strong>. Nuestro taller está ubicado en Bogotá, donde un equipo de 15 artesanos altamente calificados da vida a cada diseño con técnicas que combinan tradición y modernidad.</p>
+            
+            <div class="valores-grid">
+                <div class="valor-card">
+                    <i aria-hidden="true" class="fas fa-hand-sparkles"></i>
+                    <h4>Trabajo 100% manual</h4>
+                    <p>Cada engarce, cada pulido, cada detalle es realizado a mano por nuestros orfebres, quienes han heredado técnicas de generaciones anteriores.</p>
+                </div>
+                <div class="valor-card">
+                    <i aria-hidden="true" class="fas fa-seedling"></i>
+                    <h4>Materiales sostenibles</h4>
+                    <p>Utilizamos oro y plata de reciclaje responsable, minimizando el impacto ambiental de nuestra producción.</p>
+                </div>
+                <div class="valor-card">
+                    <i aria-hidden="true" class="fas fa-hand-holding-heart"></i>
+                    <h4>Comercio justo</h4>
+                    <p>Trabajamos directamente con pequeños mineros artesanales, garantizando que reciban una compensación justa por su trabajo.</p>
+                </div>
+                <div class="valor-card">
+                    <i aria-hidden="true" class="fas fa-leaf"></i>
+                    <h4>Certificación Verde</h4>
+                    <p>Utilizamos procesos de producción con mínimo impacto ambiental y materiales reciclados.</p>
+                </div>
+            </div>
+            
+            <p class="artesania-outro">Cada joya que sale de nuestro taller lleva consigo no solo la belleza de la esmeralda, sino también <strong>el orgullo del trabajo bien hecho</strong>, la dedicación de quienes la crearon y el respeto por la tierra que la originó.</p>
+        </div>
+
+        <!-- Legado -->
+        <div class="about-section">
+            <div class="about-text">
+                <h3><i aria-hidden="true" class="fas fa-globe-americas"></i> 🌎 Un Legado para el Futuro</h3>
+                <p>Ganbaru no es solo una joyería; es una filosofía de vida. Creemos que el lujo verdadero no está en el precio, sino en <strong>el significado</strong>. Por eso, cada pieza que entregamos va acompañada de un certificado de autenticidad y una tarjeta que cuenta el origen de la esmeralda y el nombre del artesano que la trabajó.</p>
+                <p>Nuestro sueño es que cada persona que lleve una joya Ganbaru sienta que porta un pedazo de Colombia, de su historia, de su gente y de su alma. Que al mirarla, recuerde que <strong>la belleza de la tierra puede convertirse en joya</strong>, y que esa joya, a su vez, puede transformar vidas.</p>
+            </div>
+            <div class="about-image">
+                <img loading="lazy" src="images/esmeraldas-3.png" alt="Artesanos trabajando">
+            </div>
+        </div>
+
+        <!-- Tabla de Valores -->
+        <div class="valores-tabla">
+            <h3><i aria-hidden="true" class="fas fa-star"></i> 📜 Nuestros Valores</h3>
+            <div class="tabla-container">
+                <div class="tabla-item">
+                    <span class="valor-nombre">Perseverancia (Ganbaru)</span>
+                    <span class="valor-desc">Seguimos adelante con esfuerzo y dedicación, superando desafíos para ofrecer lo mejor.</span>
+                </div>
+                <div class="tabla-item">
+                    <span class="valor-nombre">Autenticidad</span>
+                    <span class="valor-desc">Cada pieza es única, como la historia de quien la porta.</span>
+                </div>
+                <div class="tabla-item">
+                    <span class="valor-nombre">Sostenibilidad</span>
+                    <span class="valor-desc">Respetamos la tierra que nos da sus tesoros, cuidando el medio ambiente en cada proceso.</span>
+                </div>
+                <div class="tabla-item">
+                    <span class="valor-nombre">Transparencia</span>
+                    <span class="valor-desc">Desde el origen de la gema hasta las manos del artesano, todo es trazable y ético.</span>
+                </div>
+                <div class="tabla-item">
+                    <span class="valor-nombre">Conexión Humana</span>
+                    <span class="valor-desc">Valoramos a las personas por encima de las ganancias: nuestros artesanos, mineros y clientes son familia.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invitación Final -->
+        <div class="about-invitation">
+            <i aria-hidden="true" class="fas fa-heart"></i>
+            <p>Te invitamos a explorar nuestra colección y a descubrir la historia detrás de cada joya. Porque cuando eliges Ganbaru, no solo adquieres una pieza única, sino que te conviertes en parte de una cadena de amor por la tierra, por el arte y por las personas.</p>
+            <p class="invitation-slogan"><strong>"La belleza de la tierra convertida en joya"</strong> no es solo nuestro slogan, es nuestra promesa.</p>
+            <button class="btn-gold" data-page="catalog">✨ Descubrir Colección ✨</button>
+        </div>
+    </div>
+
+    <!-- CONTACTO -->
+    <div id="contact" class="page">
+        <h2>Contáctanos</h2>
+        <form id="contact-form">
+            <input type="text" placeholder="Nombre" required>
+            <input type="email" placeholder="Email" required>
+            <textarea placeholder="Mensaje"></textarea>
+            <button class="btn-gold">Enviar mensaje</button>
+        </form>
+        <p><i aria-hidden="true" class="fas fa-phone"></i> +57 310 7638495</p>
+        <p><i aria-hidden="true" class="fas fa-envelope"></i> joyeganbaru@gmail.com</p>
+    </div>
+
+    <!-- MI CUENTA -->
+    <div id="account" class="page">
+        <h2>Mi Cuenta</h2>
+        <p class="demo-notice"><i aria-hidden="true" class="fas fa-info-circle"></i> Entorno de demostración: los datos de esta cuenta son simulados y se guardan solo en tu navegador.</p>
+        <div><strong>Usuario:</strong> cliente@ganbaru.com (demo)</div>
+        <h3>Mis Pedidos</h3>
+        <div id="my-orders"></div>
+        <h3>Favoritos</h3>
+        <div id="favorites-list" class="products-grid"></div>
+        <button id="logout-sim" class="btn-gold">Cerrar Sesión (Simulado)</button>
+    </div>
+
+    <!-- PANEL ADMIN -->
+    <div id="admin" class="page">
+        <h2>Panel Administrativo</h2>
+        <div><label>Filtrar período: </label><select id="periodFilter"><option value="7">Últimos 7 días</option><option value="30" selected>30 días</option><option value="90">90 días</option></select></div>
+        <div class="admin-stats" id="stats-cards"></div>
+        <div class="chart-container"><canvas id="salesChart"></canvas></div>
+        <div class="chart-container"><canvas id="ordersChart"></canvas></div>
+        <div class="chart-container"><canvas id="categoryChart"></canvas></div>
+        <h3>Productos Más Vistos</h3><div id="topViewed"></div>
+        <h3>Más Agregados al Carrito</h3><div id="topCart"></div>
+        <h3>Búsquedas Populares</h3><div id="topSearches"></div>
+        <h3>Pedidos Recientes</h3><div id="recentOrders"></div>
+    </div>
+
+    <!-- TÉRMINOS Y CONDICIONES -->
+    <div id="terminos" class="page">
+        <div class="legal-page">
+            <h2>Términos y Condiciones</h2>
+            <p><strong>Última actualización:</strong> 27 de marzo de 2026</p>
+            <h3>1. Aceptación de los Términos</h3>
+            <p>Al acceder y utilizar el sitio web de Ganbaru Joyería, usted acepta cumplir con estos términos y condiciones. Si no está de acuerdo con alguna parte de estos términos, por favor no utilice nuestro sitio.</p>
+            <h3>2. Productos y Precios</h3>
+            <p>Todos los productos ofrecidos en Ganbaru Joyería son piezas únicas elaboradas artesanalmente con esmeraldas colombianas certificadas. Los precios están expresados en pesos colombianos (COP) e incluyen IVA. Nos reservamos el derecho de modificar precios sin previo aviso.</p>
+            <h3>3. Envíos y Entregas</h3>
+            <p>Realizamos envíos a todo el territorio colombiano. Los tiempos de entrega varían entre 3 y 10 días hábiles dependiendo de la ubicación. El costo de envío se calculará al momento de la compra.</p>
+            <h3>4. Garantía</h3>
+            <p>Todas nuestras joyas cuentan con garantía de 6 meses contra defectos de fabricación. La garantía no cubre daños por mal uso, golpes o pérdida de la pieza.</p>
+            <h3>5. Cambios y Devoluciones</h3>
+            <p>Aceptamos cambios dentro de los 15 días posteriores a la compra, siempre que el producto esté en perfectas condiciones y con su empaque original. Las devoluciones aplican únicamente por defectos de fabricación.</p>
+            <h3>6. Propiedad Intelectual</h3>
+            <p>Todo el contenido de este sitio web, incluyendo imágenes, textos, logotipos y diseños, es propiedad de Ganbaru Joyería y está protegido por las leyes de propiedad intelectual.</p>
+            <h3>7. Contacto</h3>
+            <p>Para cualquier consulta relacionada con estos términos, puede contactarnos a través de joyeganbaru@gmail.com o al teléfono +57 310 7638495.</p>
+        </div>
+    </div>
+
+    <!-- POLÍTICA DE PRIVACIDAD -->
+    <div id="privacidad" class="page">
+        <div class="legal-page">
+            <h2>Política de Privacidad</h2>
+            <p><strong>Última actualización:</strong> 27 de marzo de 2026</p>
+            <h3>1. Información que Recopilamos</h3>
+            <p>En Ganbaru Joyería recopilamos la siguiente información personal cuando realizas una compra o te registras en nuestro sitio:</p>
+            <ul>
+                <li>Nombre completo</li>
+                <li>Dirección de correo electrónico</li>
+                <li>Dirección de envío</li>
+                <li>Número de teléfono</li>
+                <li>Información de pago (procesada de forma segura a través de pasarelas de pago)</li>
+            </ul>
+            <h3>2. Uso de la Información</h3>
+            <p>Utilizamos tu información para:</p>
+            <ul>
+                <li>Procesar y gestionar tus pedidos</li>
+                <li>Enviar confirmaciones y actualizaciones de envío</li>
+                <li>Responder a tus consultas y solicitudes</li>
+                <li>Mejorar nuestros productos y servicios</li>
+                <li>Enviar comunicaciones promocionales (solo con tu consentimiento)</li>
+            </ul>
+            <h3>3. Protección de Datos</h3>
+            <p>Implementamos medidas de seguridad técnicas y organizativas para proteger tu información personal contra accesos no autorizados, pérdida o alteración. Tus datos de pago son procesados directamente por pasarelas de pago seguras.</p>
+            <h3>4. Compartir Información</h3>
+            <p>No vendemos, alquilamos ni compartimos tu información personal con terceros, excepto cuando sea necesario para:</p>
+            <ul>
+                <li>Cumplir con obligaciones legales</li>
+                <li>Procesar pagos a través de pasarelas de pago autorizadas</li>
+                <li>Realizar envíos a través de empresas de mensajería</li>
+            </ul>
+            <h3>5. Tus Derechos</h3>
+            <p>Tienes derecho a acceder, rectificar o eliminar tus datos personales en cualquier momento. Para ejercer estos derechos, contáctanos a joyeganbaru@gmail.com.</p>
+            <h3>6. Cookies</h3>
+            <p>Nuestro sitio utiliza cookies para mejorar la experiencia de navegación y recordar tus preferencias. Puedes configurar tu navegador para rechazar las cookies si lo prefieres.</p>
+            <h3>7. Cambios en la Política</h3>
+            <p>Nos reservamos el derecho de actualizar esta política de privacidad. Te notificaremos sobre cambios significativos a través de nuestro sitio web.</p>
+            <h3>8. Contacto</h3>
+            <p>Si tienes preguntas sobre esta política de privacidad, contáctanos a joyeganbaru@gmail.com o al +57 310 7638495.</p>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-col">
+            <div class="footer-logo">
+                <img src="images/logo-ganbaru.png" alt="Ganbaru Joyería" class="footer-logo-img" loading="lazy">
+                <div class="footer-logo-text">
+                    <h3>GANBARU</h3>
+                    <p>Joyería artesanal colombiana hecha con amor y dedicación. Cada pieza cuenta una historia.</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-col">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="#home" data-page="home">Inicio</a></li>
+                <li><a href="#catalog" data-page="catalog">Catálogo</a></li>
+                <li><a href="#about" data-page="about">Nosotros</a></li>
+                <li><a href="#contact" data-page="contact">Contacto</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Servicio al Cliente</h4>
+            <ul>
+                <li><a href="#account" data-page="account">Mi Cuenta</a></li>
+                <li><a href="#cart" data-page="cart">Carrito</a></li>
+                <li><a href="#terminos" data-page="terminos">Términos y Condiciones</a></li>
+                <li><a href="#privacidad" data-page="privacidad">Política de Privacidad</a></li>
+            </ul>
+        </div>
+        <div class="footer-col">
+            <h4>Contacto</h4>
+            <ul class="contact-info">
+                <li><i aria-hidden="true" class="fas fa-map-marker-alt"></i> Bogotá, Colombia</li>
+                <li><i aria-hidden="true" class="fas fa-phone"></i> +57 310 7638495</li>
+                <li><i aria-hidden="true" class="fas fa-envelope"></i> joyeganbaru@gmail.com</li>
+                <li><i aria-hidden="true" class="fas fa-clock"></i> Lun - Vie: 7am a 6pm | Sáb - Dom: 10am a 4pm</li>
+            </ul>
+            <div class="social-icons">
+                <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" aria-label="Facebook"><i aria-hidden="true" class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Instagram"><i aria-hidden="true" class="fab fa-instagram"></i></a>
+                <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X" aria-label="X"><i aria-hidden="true" class="fab fa-x-twitter"></i></a>
+                <a href="https://www.pinterest.com/" target="_blank" rel="noopener noreferrer" title="Pinterest" aria-label="Pinterest"><i aria-hidden="true" class="fab fa-pinterest"></i></a>
+                <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="YouTube"><i aria-hidden="true" class="fab fa-youtube"></i></a>
+                <a href="https://www.tiktok.com/" target="_blank" rel="noopener noreferrer" title="TikTok" aria-label="TikTok"><i aria-hidden="true" class="fab fa-tiktok"></i></a>
+                <a href="https://wa.me/573107638495" target="_blank" rel="noopener noreferrer" title="WhatsApp" aria-label="WhatsApp"><i aria-hidden="true" class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Ganbaru Joyería - La belleza de la tierra convertida en joya. Todos los derechos reservados.</p>
+    </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
