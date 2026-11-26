@@ -1,0 +1,2 @@
+# ganbaru Joyeria
+esmeraldas colonbianas
